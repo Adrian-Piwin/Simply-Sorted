@@ -13,9 +13,12 @@ namespace SimplySorted.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private ItemDatabase _itemDatabase;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            _itemDatabase = new ItemDatabase();
         }
 
         public IActionResult Index()
@@ -23,7 +26,7 @@ namespace SimplySorted.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult HomePage()
         {
             return View();
         }
