@@ -9,6 +9,8 @@ namespace SimplySorted.Models
     {
         public int id { get; set; }
 
+        public string ownershipId { get; set; }
+
         public string title { get; set; }
 
         public string category { get; set; }

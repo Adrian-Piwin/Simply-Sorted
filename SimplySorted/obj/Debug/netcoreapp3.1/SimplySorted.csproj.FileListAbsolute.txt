@@ -70,7 +70,6 @@ C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\n
 C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\SimplySorted.pdb
 C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\SimplySorted.genruntimeconfig.cache
 C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\SimplySorted.csproj.CopyComplete
-C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\scopedcss\bundle\SimplySorted.styles.css
 C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\netcoreapp3.1\Humanizer.dll
 C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\netcoreapp3.1\Microsoft.Data.SqlClient.dll
 C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll
@@ -114,3 +113,5 @@ C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\n
 C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Adrian\Source\Repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\Razor\Views\Home\HomePage.cshtml.g.cs
+C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
+C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\Razor\Views\Home\CreateAccount.cshtml.g.cs

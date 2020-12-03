@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hBr6KZru437fsZa4D+AG+YMgxo4CvcpPO37Gi7e+UdoAJHiY0llCeS1gP+2jtJ4PoXMtH8fHyOASRd4QSKQqXA==",
+  "dgSpecHash": "WsgbxdKngUGrUGoiUFf5IvNo162zbCwqbMklM21Xfka8XEyPE/y+L/F8aT8/fd8DDwj2+pC74I2f8ZCuQg8XUw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Adrian\\Source\\Repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
+  "projectFilePath": "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Adrian\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Adrian\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

@@ -11,6 +11,8 @@ namespace SimplySorted.Models
 
         public DbSet<Item> Items { get; set; }
 
+        public DbSet<USer> Users { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Data Source=(localdb)\\ProjectsV13;Initial Catalog=ItemDatabase;Integrated Security=True;");

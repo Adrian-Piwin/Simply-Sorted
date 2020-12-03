@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimplySorted.Models;
 
 namespace SimplySorted.Migrations
 {
     [DbContext(typeof(ItemDatabase))]
-    partial class ItemDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20201202225524_createTable-User")]
+    partial class createTableUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +44,7 @@ namespace SimplySorted.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("SimplySorted.Models.USer", b =>
+            modelBuilder.Entity("SimplySorted.Models.User", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()

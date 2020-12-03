@@ -15,6 +15,10 @@ namespace SimplySorted.Controllers
 
         private ItemDatabase _itemDatabase;
 
+        private string currentOwnershipId;
+
+        private bool isLoggedOn;
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -23,12 +27,44 @@ namespace SimplySorted.Controllers
 
         public IActionResult Index()
         {
+            isLoggedOn = true; // testing purposes
+            if (isLoggedOn)
+            {
+                return HomePage();
+            }
+
             return View();
+        }
+
+        public IActionResult Logout()
+        {
+            isLoggedOn = false;
+            currentOwnershipId = null;
+            return Index();
         }
 
         public IActionResult HomePage()
         {
-            return View();
+            if (!isLoggedOn)
+            {
+                // Go to login Page
+                return Index();
+            }
+
+            // Set current owner ship id from user that logs in
+            if (currentOwnershipId == null)
+            {
+                currentOwnershipId = "test123"; // testing purposes
+            }
+
+            List<Item> userItems = new List<Item>();
+            foreach (Item item in _itemDatabase.Items)
+            {
+                if (item.ownershipId == currentOwnershipId)
+                    userItems.Add(item);
+            }
+
+            return View(userItems);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

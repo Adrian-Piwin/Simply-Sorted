@@ -5804,11 +5804,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Adrian\\Source\\Repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
+      "projectUniqueName": "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
       "projectName": "SimplySorted",
-      "projectPath": "C:\\Users\\Adrian\\Source\\Repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
+      "projectPath": "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
       "packagesPath": "C:\\Users\\Adrian\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Adrian\\Source\\Repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\obj\\",
+      "outputPath": "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Adrian\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5823,7 +5823,6 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -5835,7 +5834,6 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
@@ -5876,7 +5874,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

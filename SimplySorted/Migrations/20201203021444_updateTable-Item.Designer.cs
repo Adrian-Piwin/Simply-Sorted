@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimplySorted.Models;
 
 namespace SimplySorted.Migrations
 {
     [DbContext(typeof(ItemDatabase))]
-    partial class ItemDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20201203021444_updateTable-Item")]
+    partial class updateTableItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
