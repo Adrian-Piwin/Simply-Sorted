@@ -1,5 +1,48 @@
 ﻿@* Adrian Piwin *@
 
+@model Item
+
 @{
     ViewData["Title"] = "New Item";
 }
+
+    <div>
+        <h1>New Item</h1>
+
+        <br>
+
+        <form asp-action="NewItem" method="post">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Category</span>
+                </div>
+                <input asp-for="category" type="text" class="form-control" aria-label="Category" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Title</span>
+                </div>
+                <input asp-for="title" type="text" class="form-control" aria-label="Title" aria-describedby="basic-addon1">
+            </div>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Description</span>
+                </div>
+                <textarea asp-for="description" class="form-control" aria-label="Description"></textarea>
+            </div>
+
+            <br />
+
+            <button type='submit'>Add item</button>
+        </form>
+    </div>
+
+<style>
+    .input-group-text {
+        width: 110px;
+    }
+     
+</style>
