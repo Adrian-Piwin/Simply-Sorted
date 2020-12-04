@@ -17,6 +17,8 @@ namespace SimplySorted.Controllers
 
         private static string currentOwnershipId;
 
+        private static int currentEditingId;
+
         private static bool isLoggedOn;
 
         public HomeController(ILogger<HomeController> logger)
@@ -28,6 +30,8 @@ namespace SimplySorted.Controllers
         public IActionResult Index()
         {
             isLoggedOn = true; // testing purposes
+
+            // Check if user is logged on
             if (isLoggedOn)
             {
                 return RedirectToAction("Homepage");
@@ -45,6 +49,7 @@ namespace SimplySorted.Controllers
 
         public IActionResult HomePage()
         {
+            // Check if user is logged on
             if (!isLoggedOn)
             {
                 // Go to login Page
@@ -57,6 +62,7 @@ namespace SimplySorted.Controllers
                 currentOwnershipId = "test123"; // testing purposes
             }
 
+            // Get list of user items for owner
             List<Item> userItems = new List<Item>();
             foreach (Item item in _itemDatabase.Items)
             {
@@ -78,6 +84,42 @@ namespace SimplySorted.Controllers
         {
             newItem.ownershipId = currentOwnershipId;
             _itemDatabase.Items.Add(newItem);
+            _itemDatabase.SaveChanges();
+
+            return RedirectToAction("HomePage");
+        }
+
+        [HttpGet]
+        public IActionResult EditItem(int id)
+        {
+            // Get item to edit
+            currentEditingId = id;
+            Item editItem = _itemDatabase.Items.SingleOrDefault(x => x.id == id);
+
+            // Item to edit not found
+            if (editItem == null)
+            {
+                return RedirectToAction("HomePage");
+            }
+
+            return View(editItem);
+        }
+
+        [HttpPost]
+        public IActionResult EditItem(Item editedItem)
+        {
+            var oldItem = _itemDatabase.Items.SingleOrDefault(x => x.id == currentEditingId);
+
+            // Item to edit not found
+            if (oldItem == null)
+            {
+                return RedirectToAction("HomePage");
+            }
+            
+            // Edit item with new properties
+            oldItem.title = editedItem.title;
+            oldItem.category = editedItem.category;
+            oldItem.description = editedItem.description;
             _itemDatabase.SaveChanges();
 
             return RedirectToAction("HomePage");

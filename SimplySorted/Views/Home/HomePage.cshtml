@@ -26,7 +26,7 @@
     {
         <tr>
             <td class="col1">@item.category</td>
-            <td class="col2">@item.title</td>
+            <td class="col2"><a asp-action="EditItem" asp-route-id="@item.id">@item.title</a></td>
             <td class="col3">@item.description</td>
         </tr>
     }
