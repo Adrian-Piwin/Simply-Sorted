@@ -19,6 +19,8 @@ namespace SimplySorted.Controllers
 
         private static int currentEditingId;
 
+        private static IQueryable<Item> searchResults;
+
         private static bool isLoggedOn;
 
         public HomeController(ILogger<HomeController> logger)
@@ -27,6 +29,7 @@ namespace SimplySorted.Controllers
             _itemDatabase = new ItemDatabase();
         }
 
+        // Sign in page
         public IActionResult Index()
         {
             isLoggedOn = true; // testing purposes
@@ -40,13 +43,15 @@ namespace SimplySorted.Controllers
             return View();
         }
 
+        // Log out of account
         public IActionResult Logout()
         {
             isLoggedOn = false;
             currentOwnershipId = null;
-            return Index();
+            return RedirectToAction("Index");
         }
 
+        // Home page, displaying inventory
         public IActionResult HomePage()
         {
             // Check if user is logged on
@@ -62,23 +67,30 @@ namespace SimplySorted.Controllers
                 currentOwnershipId = "test123"; // testing purposes
             }
 
-            // Get list of user items for owner
-            List<Item> userItems = new List<Item>();
-            foreach (Item item in _itemDatabase.Items)
+            IQueryable<Item> userItems;
+
+            if (searchResults == null)
             {
-                if (item.ownershipId == currentOwnershipId)
-                    userItems.Add(item);
+                // Get list of user items for owner
+                userItems = _itemDatabase.Items.Where(x => x.ownershipId == currentOwnershipId);
+            }
+            else
+            {
+                userItems = searchResults;
+                searchResults = null;
             }
 
             return View(userItems);
         }
 
+        // Add new item page
         [HttpGet]
         public IActionResult NewItem()
         {
             return View();
         }
 
+        // Add new item to database
         [HttpPost]
         public IActionResult NewItem(Item newItem)
         {
@@ -89,6 +101,7 @@ namespace SimplySorted.Controllers
             return RedirectToAction("HomePage");
         }
 
+        // Edit item page
         [HttpGet]
         public IActionResult EditItem(int id)
         {
@@ -105,6 +118,7 @@ namespace SimplySorted.Controllers
             return View(editItem);
         }
 
+        // Edit item in database
         [HttpPost]
         public IActionResult EditItem(Item editedItem)
         {
@@ -121,6 +135,44 @@ namespace SimplySorted.Controllers
             oldItem.category = editedItem.category;
             oldItem.description = editedItem.description;
             _itemDatabase.SaveChanges();
+
+            return RedirectToAction("HomePage");
+        }
+
+        // Search item in database
+        [HttpPost]
+        public IActionResult SearchItem(Search searchedItem)
+        {  
+            // Return if nothing was searched
+            if (string.IsNullOrEmpty(searchedItem.searched))
+                return RedirectToAction("HomePage");
+
+            // Check category for result
+            var result = _itemDatabase.Items
+                .Where(x => x.category.ToLower().Contains(searchedItem.searched.ToLower()))
+                .Where(x => x.ownershipId == currentOwnershipId)
+                .OrderBy(x => x.category);
+
+            // If nothing was found in category, check title
+            if (result.Count() == 0)
+            {
+                result = _itemDatabase.Items
+                    .Where(x => x.title.ToLower().Contains(searchedItem.searched.ToLower()))
+                    .Where(x => x.ownershipId == currentOwnershipId)
+                    .OrderBy(x => x.title);
+            }
+
+            // If nothing was found in title, check description
+            if (result.Count() == 0)
+            {
+                result = _itemDatabase.Items
+                    .Where(x => x.description.ToLower().Contains(searchedItem.searched.ToLower()))
+                    .Where(x => x.ownershipId == currentOwnershipId)
+                    .OrderBy(x => x.description);
+            }
+
+            // Set results for homepage
+            searchResults = result;
 
             return RedirectToAction("HomePage");
         }

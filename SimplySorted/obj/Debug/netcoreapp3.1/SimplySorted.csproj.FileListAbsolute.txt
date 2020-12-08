@@ -117,3 +117,4 @@ C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\bin\Debug\n
 C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\Razor\Views\Home\CreateAccount.cshtml.g.cs
 C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\Razor\Views\Home\NewItem.cshtml.g.cs
 C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\Razor\Views\Home\EditItem.cshtml.g.cs
+C:\Users\Adrian\source\repos\Adrian-Piwin\Simply-Sorted\SimplySorted\obj\Debug\netcoreapp3.1\Razor\Views\Home\HomePageSearch.cshtml.g.cs

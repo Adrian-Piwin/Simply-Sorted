@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+// Adrian Piwin
+
 namespace SimplySorted.Models
 {
     public class ItemDatabase : DbContext
@@ -11,7 +13,7 @@ namespace SimplySorted.Models
 
         public DbSet<Item> Items { get; set; }
 
-        public DbSet<USer> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

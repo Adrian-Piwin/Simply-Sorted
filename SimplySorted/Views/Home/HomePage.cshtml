@@ -6,51 +6,46 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div id="interactables">
-    <input id="searchBar" onkeyup="searchKeyUp()" class="form-control" type="text" placeholder="Search" aria-label="Search">
+<partial name="HomePageSearch" model="new Search()" />
+
+<div style="position: relative">
+
     <a asp-action="NewItem" id="addBtn">Add Item</a>
+
+    <table class="table table-striped">
+
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="col1">@item.category</td>
+                <td class="col2"><a asp-action="EditItem" asp-route-id="@item.id">@item.title</a></td>
+                <td class="col3">@item.description</td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
 </div>
 
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th>Category</th>
-        <th>Title</th>
-        <th>Description</th>
-    </tr>
-
-    </thead>
-
-    <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td class="col1">@item.category</td>
-            <td class="col2"><a asp-action="EditItem" asp-route-id="@item.id">@item.title</a></td>
-            <td class="col3">@item.description</td>
-        </tr>
-    }
-
-    </tbody>
-</table>
-
 <style>
-    #interactables {
-        height: calc(1.5em + .75rem + 2px);
-        margin-bottom: 20px;
-    }
-
-    #searchBar {
-        width: calc(100% - 120px);
-        min-width: 400px;
-        float: left;
-    }
 
     #addBtn {
+        position: absolute;
+        right: 0;
+        top: 6px;
+        padding-top: 5px;
+
         text-align: center;
         color: black;
-        padding-top: 5px;
-        float: right;
         width: 100px;
         height: calc(1.5em + .75rem + 2px);
         border: #ced4da 1px solid;

@@ -1,0 +1,43 @@
+﻿@* Adrian Piwin *@
+
+@model Search
+
+<form asp-action="SearchItem" method="post">
+    
+    <div id="interactables">
+        <input asp-for="searched" id="searchBar" class="form-control" type="text" placeholder="Search" aria-label="Search">
+        <button type='submit' id="barBtn">Search</button>
+    </div>
+
+</form>
+
+<style>
+    #interactables {
+        height: calc(1.5em + .75rem + 2px);
+        margin-bottom: 25px;
+    }
+
+    #searchBar {
+        width: calc(100% - 120px);
+        min-width: 200px;
+        float: left;
+    }
+
+    #barBtn {
+        text-align: center;
+        color: black;
+        float: right;
+        width: 100px;
+        height: calc(1.5em + .75rem + 2px);
+        border: #ced4da 1px solid;
+        border-radius: .25rem;
+        background-color: white;
+    }
+
+    #barBtn:hover {
+        text-decoration: none;
+        cursor: pointer;
+        background-color: #e5e4e2;
+        transition: 500ms linear;
+    }
+</style>
