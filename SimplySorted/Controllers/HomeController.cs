@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SimplySorted.Models;
+using SimplySorted.ViewModels;
 
 namespace SimplySorted.Controllers
 {
@@ -21,45 +24,22 @@ namespace SimplySorted.Controllers
 
         private static IQueryable<Item> searchResults;
 
-        private static bool isLoggedOn;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, ItemDatabase database)
         {
             _logger = logger;
-            _itemDatabase = new ItemDatabase();
+            _itemDatabase = database;
         }
 
-        // Sign in page
-        public IActionResult Index()
-        {
-            isLoggedOn = true; // testing purposes
+   
 
-            // Check if user is logged on
-            if (isLoggedOn)
-            {
-                return RedirectToAction("Homepage");
-            }
-
-            return View();
-        }
-
-        // Log out of account
-        public IActionResult Logout()
-        {
-            isLoggedOn = false;
-            currentOwnershipId = null;
-            return RedirectToAction("Index");
-        }
 
         // Home page, displaying inventory
-        public IActionResult HomePage()
+        [Authorize]
+        public IActionResult Index()
         {
-            // Check if user is logged on
-            if (!isLoggedOn)
-            {
-                // Go to login Page
-                return RedirectToAction("Index");
-            }
+           
 
             // Set current owner ship id from user that logs in
             if (currentOwnershipId == null)
@@ -98,7 +78,12 @@ namespace SimplySorted.Controllers
             _itemDatabase.Items.Add(newItem);
             _itemDatabase.SaveChanges();
 
-            return RedirectToAction("HomePage");
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult HomepageSearch()
+        {
+            return View();
         }
 
         // Edit item page
@@ -112,7 +97,7 @@ namespace SimplySorted.Controllers
             // Item to edit not found
             if (editItem == null)
             {
-                return RedirectToAction("HomePage");
+                return RedirectToAction("Index");
             }
 
             return View(editItem);
@@ -127,7 +112,7 @@ namespace SimplySorted.Controllers
             // Item to edit not found
             if (oldItem == null)
             {
-                return RedirectToAction("HomePage");
+                return RedirectToAction("Index");
             }
             
             // Edit item with new properties
@@ -136,7 +121,7 @@ namespace SimplySorted.Controllers
             oldItem.description = editedItem.description;
             _itemDatabase.SaveChanges();
 
-            return RedirectToAction("HomePage");
+            return RedirectToAction("Index");
         }
 
         // Search item in database
@@ -145,7 +130,7 @@ namespace SimplySorted.Controllers
         {  
             // Return if nothing was searched
             if (string.IsNullOrEmpty(searchedItem.searched))
-                return RedirectToAction("HomePage");
+                return RedirectToAction("Index");
 
             // Check category for result
             var result = _itemDatabase.Items
@@ -171,11 +156,13 @@ namespace SimplySorted.Controllers
                     .OrderBy(x => x.description);
             }
 
-            // Set results for homepage
+            // Set results for index
             searchResults = result;
 
-            return RedirectToAction("HomePage");
+            return RedirectToAction("Index");
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

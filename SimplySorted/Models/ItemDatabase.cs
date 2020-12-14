@@ -3,21 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 // Adrian Piwin
 
 namespace SimplySorted.Models
 {
-    public class ItemDatabase : DbContext
+    public class ItemDatabase : IdentityDbContext
     {
 
         public DbSet<Item> Items { get; set; }
 
-        public DbSet<User> Users { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ItemDatabase(DbContextOptions<ItemDatabase> options) : base(options)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\ProjectsV13;Initial Catalog=ItemDatabase;Integrated Security=True;");
+
         }
     }
 }
