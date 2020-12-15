@@ -18,48 +18,51 @@ namespace SimplySorted.Controllers
 
         private ItemDatabase _itemDatabase;
 
+        private static List<Item> userItems;
+
+        private static List<Item> searchedItems;
+
+        public static bool isSearching = false;
+
         private static string currentOwnershipId;
 
         private static int currentEditingId;
-
-        private static IQueryable<Item> searchResults;
-
-
 
         public HomeController(ILogger<HomeController> logger, ItemDatabase database)
         {
             _logger = logger;
             _itemDatabase = database;
+
+            // Initialize lists
+            if (userItems == null)
+                userItems = new List<Item>();
+            if (searchedItems == null)
+                searchedItems = new List<Item>();
         }
-
-   
-
 
         // Home page, displaying inventory
         [Authorize]
         public IActionResult Index()
         {
-           
 
             // Set current owner ship id from user that logs in
-            if (currentOwnershipId == null)
+            if (TempData.ContainsKey("loggedInUser"))
             {
-                currentOwnershipId = "test123"; // testing purposes
+                // Get the id for the user that links them to their items
+                currentOwnershipId = TempData["loggedInUser"].ToString();
+                // Retrieve the user's items
+                userItems = _itemDatabase.Items.Where(x => x.ownershipId == currentOwnershipId).ToList();
             }
 
-            IQueryable<Item> userItems;
-
-            if (searchResults == null)
+            // Check if a search is happening
+            if (isSearching)
             {
-                // Get list of user items for owner
-                userItems = _itemDatabase.Items.Where(x => x.ownershipId == currentOwnershipId);
-            }
-            else
-            {
-                userItems = searchResults;
-                searchResults = null;
+                isSearching = false;
+                // Return searched items
+                return View(searchedItems);
             }
 
+            // Return all items
             return View(userItems);
         }
 
@@ -79,11 +82,6 @@ namespace SimplySorted.Controllers
             _itemDatabase.SaveChanges();
 
             return RedirectToAction("Index");
-        }
-
-        public IActionResult HomepageSearch()
-        {
-            return View();
         }
 
         // Edit item page
@@ -124,40 +122,46 @@ namespace SimplySorted.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult HomePageSearch()
+        {
+            return View();
+        }
+
         // Search item in database
         [HttpPost]
         public IActionResult SearchItem(Search searchedItem)
         {  
-            // Return if nothing was searched
-            if (string.IsNullOrEmpty(searchedItem.searched))
+            // Return if nothing was searched, or there is nothing to search
+            if (string.IsNullOrEmpty(searchedItem.searched) || userItems.Count == 0)
                 return RedirectToAction("Index");
 
             // Check category for result
-            var result = _itemDatabase.Items
+            List<Item> result = userItems
                 .Where(x => x.category.ToLower().Contains(searchedItem.searched.ToLower()))
-                .Where(x => x.ownershipId == currentOwnershipId)
-                .OrderBy(x => x.category);
+                .OrderBy(x => x.category)
+                .ToList();
 
             // If nothing was found in category, check title
-            if (result.Count() == 0)
+            if (result.Count == 0)
             {
-                result = _itemDatabase.Items
+                result = userItems
                     .Where(x => x.title.ToLower().Contains(searchedItem.searched.ToLower()))
-                    .Where(x => x.ownershipId == currentOwnershipId)
-                    .OrderBy(x => x.title);
+                    .OrderBy(x => x.title)
+                    .ToList();
             }
 
             // If nothing was found in title, check description
-            if (result.Count() == 0)
+            if (result.Count == 0)
             {
-                result = _itemDatabase.Items
+                result = userItems
                     .Where(x => x.description.ToLower().Contains(searchedItem.searched.ToLower()))
-                    .Where(x => x.ownershipId == currentOwnershipId)
-                    .OrderBy(x => x.description);
+                    .OrderBy(x => x.description)
+                    .ToList();
             }
 
-            // Set results for index
-            searchResults = result;
+            // Set searched items
+            searchedItems = result;
+            isSearching = true;
 
             return RedirectToAction("Index");
         }

@@ -20,7 +20,7 @@ namespace SimplySorted
         {
             services.AddControllersWithViews();
             services.AddDbContext<ItemDatabase>(options =>
-                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ItemDatabase;Integrated Security=True;"));
+                options.UseSqlServer("Data Source=(localdb)\\ProjectsV13;Initial Catalog=ItemDatabase;Integrated Security=True;"));
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ItemDatabase>();
         }

@@ -53,6 +53,7 @@ namespace SimplySorted.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
+                    TempData["loggedInUser"] = model.Username;
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -76,6 +77,7 @@ namespace SimplySorted.Controllers
 
                 if (result.Succeeded)
                 {
+                    TempData["loggedInUser"] = model.Username;
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -83,14 +85,6 @@ namespace SimplySorted.Controllers
             }
 
             return View(model);
-        }
-
-        public int GenerateRandomNo()
-        {
-            int _min = 1000;
-            int _max = 9999;
-            Random _rdm = new Random();
-            return _rdm.Next(_min, _max);
         }
     }
 }

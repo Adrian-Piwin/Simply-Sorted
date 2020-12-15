@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Aurelien\\source\\repos\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj": {}
+    "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Aurelien\\source\\repos\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj": {
+    "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Aurelien\\source\\repos\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
+        "projectUniqueName": "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
         "projectName": "SimplySorted",
-        "projectPath": "C:\\Users\\Aurelien\\source\\repos\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
-        "packagesPath": "C:\\Users\\Aurelien\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Aurelien\\source\\repos\\Simply-Sorted\\SimplySorted\\obj\\",
+        "projectPath": "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\SimplySorted.csproj",
+        "packagesPath": "C:\\Users\\Adrian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Adrian\\source\\repos\\Adrian-Piwin\\Simply-Sorted\\SimplySorted\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Aurelien\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Adrian\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -81,7 +81,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
