@@ -51,7 +51,7 @@ namespace SimplySorted.Controllers
                 // Get the id for the user that links them to their items
                 currentOwnershipId = TempData["loggedInUser"].ToString();
                 // Retrieve the user's items
-                userItems = _itemDatabase.Items.Where(x => x.ownershipId == currentOwnershipId).ToList();
+                refreshUserItems();
             }
 
             // Check if a search is happening
@@ -81,6 +81,8 @@ namespace SimplySorted.Controllers
             _itemDatabase.Items.Add(newItem);
             _itemDatabase.SaveChanges();
 
+            refreshUserItems();
+
             return RedirectToAction("Index");
         }
 
@@ -103,21 +105,43 @@ namespace SimplySorted.Controllers
 
         // Edit item in database
         [HttpPost]
-        public IActionResult EditItem(Item editedItem)
+        public IActionResult EditItem(Item editedItem, string editButton, string deleteButton)
         {
-            var oldItem = _itemDatabase.Items.SingleOrDefault(x => x.id == currentEditingId);
-
-            // Item to edit not found
-            if (oldItem == null)
+            // Delete Item
+            if (deleteButton != null)
             {
-                return RedirectToAction("Index");
+                var oldItem = _itemDatabase.Items.SingleOrDefault(x => x.id == currentEditingId);
+                // Item to edit not found
+                if (oldItem == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                _itemDatabase.Items.Remove(oldItem);
+                _itemDatabase.SaveChanges();
+
+                refreshUserItems();
             }
-            
-            // Edit item with new properties
-            oldItem.title = editedItem.title;
-            oldItem.category = editedItem.category;
-            oldItem.description = editedItem.description;
-            _itemDatabase.SaveChanges();
+
+            // Update edited item
+            if (editButton != null)
+            {
+                var oldItem = _itemDatabase.Items.SingleOrDefault(x => x.id == currentEditingId);
+
+                // Item to edit not found
+                if (oldItem == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                // Edit item with new properties
+                oldItem.title = editedItem.title;
+                oldItem.category = editedItem.category;
+                oldItem.description = editedItem.description;
+                _itemDatabase.SaveChanges();
+
+                refreshUserItems();
+            }
 
             return RedirectToAction("Index");
         }
@@ -166,6 +190,11 @@ namespace SimplySorted.Controllers
             return RedirectToAction("Index");
         }
 
+        // Retrieve the user's items, must do after any database change
+        private void refreshUserItems()
+        {
+            userItems = _itemDatabase.Items.Where(x => x.ownershipId == currentOwnershipId).ToList();
+        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
