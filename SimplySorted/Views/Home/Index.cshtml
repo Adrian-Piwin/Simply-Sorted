@@ -12,6 +12,11 @@
 
     <a asp-action="NewItem" id="addBtn">Add Item</a>
 
+    <a asp-action="UndoAction" style="opacity: @ViewBag.opacity; pointer-events: @ViewBag.pointerevents" id="undoBtn" class="tooltip">
+        <img id="undoIcon" src="/assets/undoicon.png" />
+        <span class="tooltiptext">Undo Action</span>
+    </a>
+
     <table class="table table-striped">
 
         <thead>
@@ -23,14 +28,14 @@
         </thead>
 
         <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td class="col1">@item.category</td>
-                <td class="col2"><a asp-action="EditItem" asp-route-id="@item.id">@item.title</a></td>
-                <td class="col3">@item.description</td>
-            </tr>
-        }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="col1">@item.category</td>
+                    <td class="col2"><a asp-action="EditItem" asp-route-id="@item.id">@item.title</a></td>
+                    <td class="col3">@item.description</td>
+                </tr>
+            }
 
         </tbody>
     </table>
@@ -58,6 +63,48 @@
         cursor: pointer;
         background-color: #e5e4e2;
         transition: 500ms linear;
+    }
+
+    #undoBtn {
+        position: absolute;
+        right: 110px;
+        top: 3px;
+        padding-top: 5px;
+        text-align: center;
+        color: black;
+        width: 40px;
+        height: calc(1.5em + .75rem + 2px);
+    }
+
+    #undoIcon {
+        height: 100%;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 100px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: -100%;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0.7;
+    }
+
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
     }
 
     .col1 {

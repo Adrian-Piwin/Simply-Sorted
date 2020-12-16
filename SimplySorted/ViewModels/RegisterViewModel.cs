@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
+// Aurelien Le Foll
+
 namespace SimplySorted.ViewModels
 {
     public class RegisterViewModel

@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using SimplySorted.Models;
 using SimplySorted.ViewModels;
 
+// Adrian Piwin
+
 namespace SimplySorted.Controllers
 {
     public class HomeController : Controller
@@ -27,6 +29,11 @@ namespace SimplySorted.Controllers
         private static string currentOwnershipId;
 
         private static int currentEditingId;
+
+        // Undo variables
+        private static string undoAction;
+
+        private static Item undoItem;
 
         public HomeController(ILogger<HomeController> logger, ItemDatabase database)
         {
@@ -54,6 +61,24 @@ namespace SimplySorted.Controllers
                 refreshUserItems();
             }
 
+            // Logout if starting on this page with no user id
+            if (currentOwnershipId == null)
+            {
+                return RedirectToAction("Logout", "Account");
+            }
+
+            // Set undo button opacity depending if it can undo
+            if (undoItem == null)
+            {
+                ViewBag.opacity = "0.3";
+                ViewBag.pointerevents = "none";
+            }
+            else
+            {
+                ViewBag.opacity = "1";
+                ViewBag.pointerevents = "auto";
+            }
+
             // Check if a search is happening
             if (isSearching)
             {
@@ -79,9 +104,50 @@ namespace SimplySorted.Controllers
         {
             newItem.ownershipId = currentOwnershipId;
             _itemDatabase.Items.Add(newItem);
+            undoItem = newItem;
+            undoAction = "add";
             _itemDatabase.SaveChanges();
 
             refreshUserItems();
+
+            return RedirectToAction("Index");
+        }
+
+        // Undo action
+        [HttpGet]
+        public IActionResult UndoAction()
+        {
+            // Undo an action such as adding a new item, deleting an item, or editing an item
+
+            // Check if there is anything to undo
+            if (undoItem == null)
+                return RedirectToAction("Index");
+
+            // Check what action needs to be undone
+            switch (undoAction)
+            {
+                case "add":
+                    //delete item
+                    _itemDatabase.Items.Remove(undoItem);
+                    break;
+
+                case "delete":
+                    // add back item
+                    _itemDatabase.Items.Add(undoItem);
+                    break;
+
+                case "edit":
+                    //edit item to have previous properties
+                    var oldItem = _itemDatabase.Items.SingleOrDefault(x => x.id == undoItem.id);
+                    oldItem.category = undoItem.category;
+                    oldItem.title = undoItem.title;
+                    oldItem.description = undoItem.description;
+                    break;
+            }
+
+            _itemDatabase.SaveChanges();
+            refreshUserItems();
+            undoItem = null;
 
             return RedirectToAction("Index");
         }
@@ -117,6 +183,16 @@ namespace SimplySorted.Controllers
                     return RedirectToAction("Index");
                 }
 
+                // Store so user can undo
+                undoItem = new Item()
+                {
+                    title = oldItem.title,
+                    category = oldItem.category,
+                    description = oldItem.description,
+                    ownershipId = oldItem.ownershipId
+                };
+                undoAction = "delete";
+
                 _itemDatabase.Items.Remove(oldItem);
                 _itemDatabase.SaveChanges();
 
@@ -134,10 +210,21 @@ namespace SimplySorted.Controllers
                     return RedirectToAction("Index");
                 }
 
+                // Store for undo
+                undoItem = new Item()
+                {
+                    id = oldItem.id,
+                    title = oldItem.title,
+                    category = oldItem.category,
+                    description = oldItem.description
+                };
+                undoAction = "edit";
+
                 // Edit item with new properties
                 oldItem.title = editedItem.title;
                 oldItem.category = editedItem.category;
                 oldItem.description = editedItem.description;
+
                 _itemDatabase.SaveChanges();
 
                 refreshUserItems();

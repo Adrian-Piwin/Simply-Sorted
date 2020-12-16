@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SimplySorted.ViewModels;
 
+// Aurelien Le Foll
+
 namespace SimplySorted.Controllers
 {
     public class AccountController : Controller
@@ -29,6 +31,7 @@ namespace SimplySorted.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+ 
             return View();
         }
 
@@ -65,8 +68,6 @@ namespace SimplySorted.Controllers
 
             return View();
         }
-
-
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
