@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,6 @@ namespace SimplySorted.Controllers
         [HttpGet]
         public IActionResult Login()
         {
- 
             return View();
         }
 
@@ -56,7 +56,6 @@ namespace SimplySorted.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
-                    TempData["loggedInUser"] = model.Username;
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -78,7 +77,6 @@ namespace SimplySorted.Controllers
 
                 if (result.Succeeded)
                 {
-                    TempData["loggedInUser"] = model.Username;
                     return RedirectToAction("Index", "Home");
                 }
 

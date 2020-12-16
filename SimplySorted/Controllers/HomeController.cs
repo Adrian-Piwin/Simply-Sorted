@@ -18,6 +18,8 @@ namespace SimplySorted.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private UserManager<IdentityUser> _userManager;
+
         private ItemDatabase _itemDatabase;
 
         private static List<Item> userItems;
@@ -31,44 +33,41 @@ namespace SimplySorted.Controllers
         private static int currentEditingId;
 
         // Undo variables
-        private static string undoAction;
+        private static List<string> undoAction;
 
-        private static Item undoItem;
+        private static List<Item> undoItem;
 
-        public HomeController(ILogger<HomeController> logger, ItemDatabase database)
+        public HomeController(ILogger<HomeController> logger, ItemDatabase database, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _itemDatabase = database;
+            _userManager = userManager;
 
             // Initialize lists
             if (userItems == null)
                 userItems = new List<Item>();
             if (searchedItems == null)
                 searchedItems = new List<Item>();
+            if (undoAction == null)
+                undoAction = new List<string>();
+            if (undoItem == null)
+                undoItem = new List<Item>();
         }
 
         // Home page, displaying inventory
         [Authorize]
         public IActionResult Index()
         {
-
-            // Set current owner ship id from user that logs in
-            if (TempData.ContainsKey("loggedInUser"))
-            {
-                // Get the id for the user that links them to their items
-                currentOwnershipId = TempData["loggedInUser"].ToString();
-                // Retrieve the user's items
-                refreshUserItems();
-            }
+            setupUser();
 
             // Logout if starting on this page with no user id
-            if (currentOwnershipId == null)
+            if (string.IsNullOrEmpty(currentOwnershipId))
             {
                 return RedirectToAction("Logout", "Account");
             }
 
             // Set undo button opacity depending if it can undo
-            if (undoItem == null)
+            if (undoItem.Count == 0)
             {
                 ViewBag.opacity = "0.3";
                 ViewBag.pointerevents = "none";
@@ -91,6 +90,16 @@ namespace SimplySorted.Controllers
             return View(userItems);
         }
 
+        // Setup homepage for user
+        private void setupUser()
+        {
+            // Get the id for the user that links them to their items
+            string loggedUsername = _userManager.GetUserName(HttpContext.User);
+            currentOwnershipId = loggedUsername;
+            // Retrieve the user's items
+            refreshUserItems();
+        }
+
         // Add new item page
         [HttpGet]
         public IActionResult NewItem()
@@ -104,8 +113,8 @@ namespace SimplySorted.Controllers
         {
             newItem.ownershipId = currentOwnershipId;
             _itemDatabase.Items.Add(newItem);
-            undoItem = newItem;
-            undoAction = "add";
+            undoItem.Add(newItem);
+            undoAction.Add("add"); 
             _itemDatabase.SaveChanges();
 
             refreshUserItems();
@@ -113,41 +122,44 @@ namespace SimplySorted.Controllers
             return RedirectToAction("Index");
         }
 
-        // Undo action
+        // Undo an action such as adding a new item, deleting an item, or editing an item
         [HttpGet]
         public IActionResult UndoAction()
         {
-            // Undo an action such as adding a new item, deleting an item, or editing an item
-
             // Check if there is anything to undo
-            if (undoItem == null)
+            if (undoItem.Count == 0)
                 return RedirectToAction("Index");
 
+            Item currentUndoItem = undoItem[undoItem.Count - 1];
+            string currentUndoAction = undoAction[undoAction.Count - 1];
+
+            undoItem.RemoveAt(undoItem.Count - 1);
+            undoAction.RemoveAt(undoAction.Count - 1);
+
             // Check what action needs to be undone
-            switch (undoAction)
+            switch (currentUndoAction)
             {
                 case "add":
                     //delete item
-                    _itemDatabase.Items.Remove(undoItem);
+                    _itemDatabase.Items.Remove(currentUndoItem);
                     break;
 
                 case "delete":
                     // add back item
-                    _itemDatabase.Items.Add(undoItem);
+                    _itemDatabase.Items.Add(currentUndoItem);
                     break;
 
                 case "edit":
                     //edit item to have previous properties
-                    var oldItem = _itemDatabase.Items.SingleOrDefault(x => x.id == undoItem.id);
-                    oldItem.category = undoItem.category;
-                    oldItem.title = undoItem.title;
-                    oldItem.description = undoItem.description;
+                    var oldItem = _itemDatabase.Items.SingleOrDefault(x => x.id == currentUndoItem.id);
+                    oldItem.category = currentUndoItem.category;
+                    oldItem.title = currentUndoItem.title;
+                    oldItem.description = currentUndoItem.description;
                     break;
             }
 
             _itemDatabase.SaveChanges();
             refreshUserItems();
-            undoItem = null;
 
             return RedirectToAction("Index");
         }
@@ -184,14 +196,14 @@ namespace SimplySorted.Controllers
                 }
 
                 // Store so user can undo
-                undoItem = new Item()
+                undoItem.Add(new Item()
                 {
                     title = oldItem.title,
                     category = oldItem.category,
                     description = oldItem.description,
                     ownershipId = oldItem.ownershipId
-                };
-                undoAction = "delete";
+                });
+                undoAction.Add("delete");
 
                 _itemDatabase.Items.Remove(oldItem);
                 _itemDatabase.SaveChanges();
@@ -211,14 +223,14 @@ namespace SimplySorted.Controllers
                 }
 
                 // Store for undo
-                undoItem = new Item()
+                undoItem.Add(new Item()
                 {
                     id = oldItem.id,
                     title = oldItem.title,
                     category = oldItem.category,
                     description = oldItem.description
-                };
-                undoAction = "edit";
+                });
+                undoAction.Add("edit");
 
                 // Edit item with new properties
                 oldItem.title = editedItem.title;
